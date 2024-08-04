@@ -5,16 +5,30 @@ import { StatusBar } from "expo-status-bar";
 import GameScreen from "./screens/GameScreen";
 import { useState } from "react";
 import colors from "./constants/colors";
+import GameOverScreen from "./screens/GameOverScreen";
 
 export default function App() {
   const [enteredNumber, setEnteredNumber] = useState();
+  const [isFoundNumber, setIsFoundNumber] = useState(false);
 
   function confirmHandler(number) {
     setEnteredNumber(number);
   }
+  function onMatchFoundHandler() {
+    setIsFoundNumber(true);
+  }
+
   let screen = <StartGameScreen onPickedNumber={confirmHandler} />;
   if (enteredNumber) {
-    screen = <GameScreen userNumber={enteredNumber} />;
+    screen = (
+      <GameScreen
+        userNumber={enteredNumber}
+        onMatchFound={onMatchFoundHandler}
+      />
+    );
+  }
+  if (isFoundNumber) {
+    screen = <GameOverScreen />;
   }
   return (
     <>
